@@ -1,7 +1,16 @@
 Name: user.rpc
 ListenOn: 0.0.0.0:8080
 
+#etcd服务发现配置
 Etcd:
   Hosts:
     - 127.0.0.1:2379
   Key: user.rpc
+
+
+#数据库和redis配置信息
+Mysql:
+  Datasource: root:123456@tcp(127.0.0.1:3306)/cloud_disk?charset=utf8mb4&parseTime=True&loc=Local
+
+#redis:
+#  host: 127.0.0.1:6379
