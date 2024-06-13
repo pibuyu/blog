@@ -31,3 +31,8 @@ func (s *UserServiceServer) GetUserInfo(ctx context.Context, in *user.GetUserInf
 	l := logic.NewGetUserInfoLogic(ctx, s.svcCtx)
 	return l.GetUserInfo(in)
 }
+
+func (s *UserServiceServer) GetUserRepositoryByUserIdentity(ctx context.Context, in *user.GetUserRepositoryByUserIdentityRequest) (*user.GetUserRepositoryByUserIdentityResponse, error) {
+	l := logic.NewGetUserRepositoryByUserIdentityLogic(ctx, s.svcCtx)
+	return l.GetUserRepositoryByUserIdentity(in)
+}

@@ -24,10 +24,25 @@ message GetUserInfoResponse{
   string username=1;
   string password=2;
 }
+message GetUserRepositoryByUserIdentityRequest{
+  string userIdentity=1;
+}
 
+message UserRepository{
+  string identity = 1;
+  string user_identity = 2;
+  int64 parent_id = 3;
+  string repository_identity = 4;
+  string ext = 5;
+  string name = 6;
+}
+message GetUserRepositoryByUserIdentityResponse{
+  repeated UserRepository repositories=1;
+}
 service UserService {
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse);
+  rpc GetUserRepositoryByUserIdentity (GetUserRepositoryByUserIdentityRequest) returns (GetUserRepositoryByUserIdentityResponse);
 }
 
 //   goctl rpc protoc user.proto --go_out=types --go-grpc_out=types --zrpc_out=.

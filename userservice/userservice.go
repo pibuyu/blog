@@ -13,14 +13,18 @@ import (
 )
 
 type (
-	GetUserInfoRequest  = user.GetUserInfoRequest
-	GetUserInfoResponse = user.GetUserInfoResponse
-	LoginRequest        = user.LoginRequest
-	LoginResponse       = user.LoginResponse
+	GetUserInfoRequest                      = user.GetUserInfoRequest
+	GetUserInfoResponse                     = user.GetUserInfoResponse
+	GetUserRepositoryByUserIdentityRequest  = user.GetUserRepositoryByUserIdentityRequest
+	GetUserRepositoryByUserIdentityResponse = user.GetUserRepositoryByUserIdentityResponse
+	LoginRequest                            = user.LoginRequest
+	LoginResponse                           = user.LoginResponse
+	UserRepository                          = user.UserRepository
 
 	UserService interface {
 		Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 		GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error)
+		GetUserRepositoryByUserIdentity(ctx context.Context, in *GetUserRepositoryByUserIdentityRequest, opts ...grpc.CallOption) (*GetUserRepositoryByUserIdentityResponse, error)
 	}
 
 	defaultUserService struct {
@@ -42,4 +46,9 @@ func (m *defaultUserService) Login(ctx context.Context, in *LoginRequest, opts .
 func (m *defaultUserService) GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error) {
 	client := user.NewUserServiceClient(m.cli.Conn())
 	return client.GetUserInfo(ctx, in, opts...)
+}
+
+func (m *defaultUserService) GetUserRepositoryByUserIdentity(ctx context.Context, in *GetUserRepositoryByUserIdentityRequest, opts ...grpc.CallOption) (*GetUserRepositoryByUserIdentityResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.GetUserRepositoryByUserIdentity(ctx, in, opts...)
 }

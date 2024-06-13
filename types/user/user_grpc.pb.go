@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	UserService_Login_FullMethodName       = "/rpc.UserService/Login"
-	UserService_GetUserInfo_FullMethodName = "/rpc.UserService/GetUserInfo"
+	UserService_Login_FullMethodName                           = "/rpc.UserService/Login"
+	UserService_GetUserInfo_FullMethodName                     = "/rpc.UserService/GetUserInfo"
+	UserService_GetUserRepositoryByUserIdentity_FullMethodName = "/rpc.UserService/GetUserRepositoryByUserIdentity"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -29,6 +30,7 @@ const (
 type UserServiceClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error)
+	GetUserRepositoryByUserIdentity(ctx context.Context, in *GetUserRepositoryByUserIdentityRequest, opts ...grpc.CallOption) (*GetUserRepositoryByUserIdentityResponse, error)
 }
 
 type userServiceClient struct {
@@ -57,12 +59,22 @@ func (c *userServiceClient) GetUserInfo(ctx context.Context, in *GetUserInfoRequ
 	return out, nil
 }
 
+func (c *userServiceClient) GetUserRepositoryByUserIdentity(ctx context.Context, in *GetUserRepositoryByUserIdentityRequest, opts ...grpc.CallOption) (*GetUserRepositoryByUserIdentityResponse, error) {
+	out := new(GetUserRepositoryByUserIdentityResponse)
+	err := c.cc.Invoke(ctx, UserService_GetUserRepositoryByUserIdentity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
 type UserServiceServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error)
+	GetUserRepositoryByUserIdentity(context.Context, *GetUserRepositoryByUserIdentityRequest) (*GetUserRepositoryByUserIdentityResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -75,6 +87,9 @@ func (UnimplementedUserServiceServer) Login(context.Context, *LoginRequest) (*Lo
 }
 func (UnimplementedUserServiceServer) GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserInfo not implemented")
+}
+func (UnimplementedUserServiceServer) GetUserRepositoryByUserIdentity(context.Context, *GetUserRepositoryByUserIdentityRequest) (*GetUserRepositoryByUserIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserRepositoryByUserIdentity not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -125,6 +140,24 @@ func _UserService_GetUserInfo_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_GetUserRepositoryByUserIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserRepositoryByUserIdentityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetUserRepositoryByUserIdentity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_GetUserRepositoryByUserIdentity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetUserRepositoryByUserIdentity(ctx, req.(*GetUserRepositoryByUserIdentityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -139,6 +172,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserInfo",
 			Handler:    _UserService_GetUserInfo_Handler,
+		},
+		{
+			MethodName: "GetUserRepositoryByUserIdentity",
+			Handler:    _UserService_GetUserRepositoryByUserIdentity_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
