@@ -1,12 +1,10 @@
 package logic
 
 import (
-	"context"
-	"fmt"
-
+	"blog/rpc/internal/helper"
 	"blog/rpc/internal/svc"
 	"blog/rpc/types/user"
-
+	"context"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -25,9 +23,13 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
+	token, err := helper.GenerateToken(in.Id, in.Identity, in.Name)
+	if err != nil {
+		return nil, err
+	}
 	return &user.LoginResponse{
-		Code: 0,
+		Code: 200,
 		Msg:  "登陆成功",
-		Data: fmt.Sprintf("登录的用户名为%v,密码为%v", in.Username, in.Password),
+		Data: token,
 	}, nil
 }

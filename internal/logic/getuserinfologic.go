@@ -24,7 +24,10 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserInfoLogic) GetUserInfo(in *user.GetUserInfoRequest) (*user.GetUserInfoResponse, error) {
-	// todo: add your logic here and delete this line
 
-	return &user.GetUserInfoResponse{}, nil
+	//这里应该是去查数据库，这里先不用数据库，写死个人信息直接返回
+	return &user.GetUserInfoResponse{
+		Username: "hhf",
+		Password: "123456",
+	}, nil
 }
