@@ -3,20 +3,20 @@ package svc
 import (
 	"blog/rpc/internal/config"
 	"blog/rpc/internal/models"
-	"xorm.io/xorm"
+	"gorm.io/gorm"
 )
 
 type ServiceContext struct {
 	Config config.Config
 
-	Engine *xorm.Engine
+	DB *gorm.DB
 	//RDB    *redis.Client
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config: c,
-		Engine: models.InitDB(c.Mysql.Datasource),
+		DB:     models.InitDB(c.Mysql.Datasource),
 		//RDB:    models.InitRedisConnection(c),
 	}
 }

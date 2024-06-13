@@ -3,29 +3,19 @@ package models
 import (
 	"blog/rpc/internal/config"
 	"blog/rpc/internal/define"
-	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 
 	"github.com/redis/go-redis/v9"
-	"xorm.io/xorm"
 )
 
-func InitDB(datasource string) *xorm.Engine {
-	engine, err := xorm.NewEngine("mysql", datasource)
+func InitDB(datasource string) *gorm.DB {
+	db, err := gorm.Open(mysql.Open(datasource), &gorm.Config{})
 	if err != nil {
-		fmt.Print("连接数据库失败" + err.Error())
-		return nil
+		panic(err)
 	}
-	engine.ShowSQL(true)
-	///*
-	//	//当然也可以表明的映射规则和字段的映射规则不同
-	//	engine.SetTableMapper(core.SnakeMapper{})
-	//	engine.SetColumnMapper(core.SameMapper{})
-	//*/
-	////也支持在setMapper的同时在表名/字段名前面加上前缀
-	//engine.SetTableMapper(core.NewPrefixMapper(core.SnakeMapper{}, "xorm_"))
-	//engine.Sync(new(User))
-	return engine
+	return db
 }
 
 // InitRedisConnection 返回redis连接

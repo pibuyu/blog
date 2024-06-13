@@ -1,16 +1,17 @@
 package models
 
-import "time"
+import (
+	"gorm.io/gorm"
+)
 
 type UserBasic struct {
-	Id        int64 `xorm:"pk autoincr"`
-	Identity  string
-	Name      string
-	Password  string
-	Email     string
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt time.Time
+	*gorm.Model
+	Identity string
+	Name     string
+	Password string
+	Email    string
+
+	RepositoryInfo UserRepository `json:"repository_info" gorm:"foreignKey:Identity"`
 }
 
 func (table UserBasic) TableName() string {

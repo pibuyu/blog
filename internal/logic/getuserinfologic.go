@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"gorm.io/gorm"
 
 	"blog/rpc/internal/svc"
 	"blog/rpc/types/user"
@@ -33,14 +34,16 @@ func (l *GetUserInfoLogic) GetUserInfo(in *user.GetUserInfoRequest) (*user.GetUs
 	//	Username: "hhf",
 	//	Password: "123456",
 	//}, nil
-	userBasic := new(models.UserBasic)
-	has, err := l.svcCtx.Engine.Where("id = ?", in.UserId).Get(userBasic)
-	if err != nil {
-		return nil, fmt.Errorf("查询过程出错：%w", err)
+	userBasic := models.UserBasic{}
+	result := l.svcCtx.DB.Debug().Where("id = ?", in.UserId).First(&userBasic)
+	if result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			return nil, errors.New("未查询到该用户")
+		}
+		return nil, fmt.Errorf("查询过程出错：%w", result.Error)
+
 	}
-	if !has {
-		return nil, errors.New("查询的用户不存在")
-	}
+
 	return &user.GetUserInfoResponse{
 		Username: userBasic.Name,
 		Password: userBasic.Password,
