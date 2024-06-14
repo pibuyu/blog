@@ -39,10 +39,36 @@ message UserRepository{
 message GetUserRepositoryByUserIdentityResponse{
   repeated UserRepository repositories=1;
 }
+
+message DeleteUserRepositoryByIdentityRequest{
+  string identity=1;
+}
+message DeleteUserRepositoryByIdentityResponse{
+  bool  result=1;
+}
+message RegisterSendCodeRequest{
+  string email=1;
+}
+message RegisterSendCodeResponse{
+  bool success=1;
+  string message=2;
+}
+message UserRegisterRequest{
+  string username=1;
+  string password=2;
+  string email=3;
+}
+message UserRegisterResponse{
+  bool  result=1;
+  string msg=2;
+}
 service UserService {
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse);
   rpc GetUserRepositoryByUserIdentity (GetUserRepositoryByUserIdentityRequest) returns (GetUserRepositoryByUserIdentityResponse);
+  rpc DeleteUserRepositoryByIdentity(DeleteUserRepositoryByIdentityRequest)returns (DeleteUserRepositoryByIdentityResponse);
+  rpc RegisterSendCode(RegisterSendCodeRequest) returns (RegisterSendCodeResponse);
+  rpc UserRegister(UserRegisterRequest) returns (UserRegisterResponse);
 }
 
 //   goctl rpc protoc user.proto --go_out=types --go-grpc_out=types --zrpc_out=.

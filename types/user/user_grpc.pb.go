@@ -22,6 +22,9 @@ const (
 	UserService_Login_FullMethodName                           = "/rpc.UserService/Login"
 	UserService_GetUserInfo_FullMethodName                     = "/rpc.UserService/GetUserInfo"
 	UserService_GetUserRepositoryByUserIdentity_FullMethodName = "/rpc.UserService/GetUserRepositoryByUserIdentity"
+	UserService_DeleteUserRepositoryByIdentity_FullMethodName  = "/rpc.UserService/DeleteUserRepositoryByIdentity"
+	UserService_RegisterSendCode_FullMethodName                = "/rpc.UserService/RegisterSendCode"
+	UserService_UserRegister_FullMethodName                    = "/rpc.UserService/UserRegister"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -31,6 +34,9 @@ type UserServiceClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error)
 	GetUserRepositoryByUserIdentity(ctx context.Context, in *GetUserRepositoryByUserIdentityRequest, opts ...grpc.CallOption) (*GetUserRepositoryByUserIdentityResponse, error)
+	DeleteUserRepositoryByIdentity(ctx context.Context, in *DeleteUserRepositoryByIdentityRequest, opts ...grpc.CallOption) (*DeleteUserRepositoryByIdentityResponse, error)
+	RegisterSendCode(ctx context.Context, in *RegisterSendCodeRequest, opts ...grpc.CallOption) (*RegisterSendCodeResponse, error)
+	UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error)
 }
 
 type userServiceClient struct {
@@ -68,6 +74,33 @@ func (c *userServiceClient) GetUserRepositoryByUserIdentity(ctx context.Context,
 	return out, nil
 }
 
+func (c *userServiceClient) DeleteUserRepositoryByIdentity(ctx context.Context, in *DeleteUserRepositoryByIdentityRequest, opts ...grpc.CallOption) (*DeleteUserRepositoryByIdentityResponse, error) {
+	out := new(DeleteUserRepositoryByIdentityResponse)
+	err := c.cc.Invoke(ctx, UserService_DeleteUserRepositoryByIdentity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) RegisterSendCode(ctx context.Context, in *RegisterSendCodeRequest, opts ...grpc.CallOption) (*RegisterSendCodeResponse, error) {
+	out := new(RegisterSendCodeResponse)
+	err := c.cc.Invoke(ctx, UserService_RegisterSendCode_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error) {
+	out := new(UserRegisterResponse)
+	err := c.cc.Invoke(ctx, UserService_UserRegister_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -75,6 +108,9 @@ type UserServiceServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	GetUserInfo(context.Context, *GetUserInfoRequest) (*GetUserInfoResponse, error)
 	GetUserRepositoryByUserIdentity(context.Context, *GetUserRepositoryByUserIdentityRequest) (*GetUserRepositoryByUserIdentityResponse, error)
+	DeleteUserRepositoryByIdentity(context.Context, *DeleteUserRepositoryByIdentityRequest) (*DeleteUserRepositoryByIdentityResponse, error)
+	RegisterSendCode(context.Context, *RegisterSendCodeRequest) (*RegisterSendCodeResponse, error)
+	UserRegister(context.Context, *UserRegisterRequest) (*UserRegisterResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -90,6 +126,15 @@ func (UnimplementedUserServiceServer) GetUserInfo(context.Context, *GetUserInfoR
 }
 func (UnimplementedUserServiceServer) GetUserRepositoryByUserIdentity(context.Context, *GetUserRepositoryByUserIdentityRequest) (*GetUserRepositoryByUserIdentityResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserRepositoryByUserIdentity not implemented")
+}
+func (UnimplementedUserServiceServer) DeleteUserRepositoryByIdentity(context.Context, *DeleteUserRepositoryByIdentityRequest) (*DeleteUserRepositoryByIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserRepositoryByIdentity not implemented")
+}
+func (UnimplementedUserServiceServer) RegisterSendCode(context.Context, *RegisterSendCodeRequest) (*RegisterSendCodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterSendCode not implemented")
+}
+func (UnimplementedUserServiceServer) UserRegister(context.Context, *UserRegisterRequest) (*UserRegisterResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserRegister not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -158,6 +203,60 @@ func _UserService_GetUserRepositoryByUserIdentity_Handler(srv interface{}, ctx c
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_DeleteUserRepositoryByIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteUserRepositoryByIdentityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).DeleteUserRepositoryByIdentity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_DeleteUserRepositoryByIdentity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).DeleteUserRepositoryByIdentity(ctx, req.(*DeleteUserRepositoryByIdentityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_RegisterSendCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterSendCodeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).RegisterSendCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_RegisterSendCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).RegisterSendCode(ctx, req.(*RegisterSendCodeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_UserRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserRegisterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).UserRegister(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_UserRegister_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).UserRegister(ctx, req.(*UserRegisterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +275,18 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserRepositoryByUserIdentity",
 			Handler:    _UserService_GetUserRepositoryByUserIdentity_Handler,
+		},
+		{
+			MethodName: "DeleteUserRepositoryByIdentity",
+			Handler:    _UserService_DeleteUserRepositoryByIdentity_Handler,
+		},
+		{
+			MethodName: "RegisterSendCode",
+			Handler:    _UserService_RegisterSendCode_Handler,
+		},
+		{
+			MethodName: "UserRegister",
+			Handler:    _UserService_UserRegister_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

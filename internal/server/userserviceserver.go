@@ -36,3 +36,18 @@ func (s *UserServiceServer) GetUserRepositoryByUserIdentity(ctx context.Context,
 	l := logic.NewGetUserRepositoryByUserIdentityLogic(ctx, s.svcCtx)
 	return l.GetUserRepositoryByUserIdentity(in)
 }
+
+func (s *UserServiceServer) DeleteUserRepositoryByIdentity(ctx context.Context, in *user.DeleteUserRepositoryByIdentityRequest) (*user.DeleteUserRepositoryByIdentityResponse, error) {
+	l := logic.NewDeleteUserRepositoryByIdentityLogic(ctx, s.svcCtx)
+	return l.DeleteUserRepositoryByIdentity(in)
+}
+
+func (s *UserServiceServer) RegisterSendCode(ctx context.Context, in *user.RegisterSendCodeRequest) (*user.RegisterSendCodeResponse, error) {
+	l := logic.NewRegisterSendCodeLogic(ctx, s.svcCtx)
+	return l.RegisterSendCode(in)
+}
+
+func (s *UserServiceServer) UserRegister(ctx context.Context, in *user.UserRegisterRequest) (*user.UserRegisterResponse, error) {
+	l := logic.NewUserRegisterLogic(ctx, s.svcCtx)
+	return l.UserRegister(in)
+}

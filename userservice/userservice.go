@@ -13,18 +13,27 @@ import (
 )
 
 type (
+	DeleteUserRepositoryByIdentityRequest   = user.DeleteUserRepositoryByIdentityRequest
+	DeleteUserRepositoryByIdentityResponse  = user.DeleteUserRepositoryByIdentityResponse
 	GetUserInfoRequest                      = user.GetUserInfoRequest
 	GetUserInfoResponse                     = user.GetUserInfoResponse
 	GetUserRepositoryByUserIdentityRequest  = user.GetUserRepositoryByUserIdentityRequest
 	GetUserRepositoryByUserIdentityResponse = user.GetUserRepositoryByUserIdentityResponse
 	LoginRequest                            = user.LoginRequest
 	LoginResponse                           = user.LoginResponse
+	RegisterSendCodeRequest                 = user.RegisterSendCodeRequest
+	RegisterSendCodeResponse                = user.RegisterSendCodeResponse
+	UserRegisterRequest                     = user.UserRegisterRequest
+	UserRegisterResponse                    = user.UserRegisterResponse
 	UserRepository                          = user.UserRepository
 
 	UserService interface {
 		Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 		GetUserInfo(ctx context.Context, in *GetUserInfoRequest, opts ...grpc.CallOption) (*GetUserInfoResponse, error)
 		GetUserRepositoryByUserIdentity(ctx context.Context, in *GetUserRepositoryByUserIdentityRequest, opts ...grpc.CallOption) (*GetUserRepositoryByUserIdentityResponse, error)
+		DeleteUserRepositoryByIdentity(ctx context.Context, in *DeleteUserRepositoryByIdentityRequest, opts ...grpc.CallOption) (*DeleteUserRepositoryByIdentityResponse, error)
+		RegisterSendCode(ctx context.Context, in *RegisterSendCodeRequest, opts ...grpc.CallOption) (*RegisterSendCodeResponse, error)
+		UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error)
 	}
 
 	defaultUserService struct {
@@ -51,4 +60,19 @@ func (m *defaultUserService) GetUserInfo(ctx context.Context, in *GetUserInfoReq
 func (m *defaultUserService) GetUserRepositoryByUserIdentity(ctx context.Context, in *GetUserRepositoryByUserIdentityRequest, opts ...grpc.CallOption) (*GetUserRepositoryByUserIdentityResponse, error) {
 	client := user.NewUserServiceClient(m.cli.Conn())
 	return client.GetUserRepositoryByUserIdentity(ctx, in, opts...)
+}
+
+func (m *defaultUserService) DeleteUserRepositoryByIdentity(ctx context.Context, in *DeleteUserRepositoryByIdentityRequest, opts ...grpc.CallOption) (*DeleteUserRepositoryByIdentityResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.DeleteUserRepositoryByIdentity(ctx, in, opts...)
+}
+
+func (m *defaultUserService) RegisterSendCode(ctx context.Context, in *RegisterSendCodeRequest, opts ...grpc.CallOption) (*RegisterSendCodeResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.RegisterSendCode(ctx, in, opts...)
+}
+
+func (m *defaultUserService) UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.UserRegister(ctx, in, opts...)
 }
