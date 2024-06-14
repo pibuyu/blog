@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"blog/rpc/internal/define"
 	"blog/rpc/internal/helper"
 	"blog/rpc/internal/models"
 	"blog/rpc/internal/svc"
@@ -27,7 +28,6 @@ func NewUserRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 }
 
 func (l *UserRegisterLogic) UserRegister(in *user.UserRegisterRequest) (*user.UserRegisterResponse, error) {
-
 	//先查询该邮箱是否注册过
 	var count int64
 	err := l.svcCtx.DB.Debug().Where("email=?", in.Email).Model(&models.UserBasic{}).Count(&count).Error
@@ -38,6 +38,16 @@ func (l *UserRegisterLogic) UserRegister(in *user.UserRegisterRequest) (*user.Us
 		return nil, errors.New("该邮箱已被注册！")
 	}
 
+	//判断用户输入的验证码是否正确
+	inputCode := in.Code
+	actualCode, err := l.svcCtx.RDB.Get(l.ctx, define.REDIS_VERI_CODE_PRE+in.Email).Result()
+	if err != nil {
+		return nil, fmt.Errorf("从redis取验证码出错：%w", err)
+	}
+	//fmt.Printf("用户输入的验证码为：%s,redis中的验证码为%s", inputCode, actualCode)
+	if inputCode != actualCode {
+		return nil, errors.New("输入的验证码错误")
+	}
 	//进行注册
 	ub := &models.UserBasic{
 		Identity: helper.GetUUID(),

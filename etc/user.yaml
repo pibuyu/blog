@@ -12,5 +12,5 @@ Etcd:
 Mysql:
   Datasource: root:123456@tcp(127.0.0.1:3306)/cloud_disk?charset=utf8mb4&parseTime=True&loc=Local
 
-#redis:
-#  host: 127.0.0.1:6379
+RedisConf:
+  Host: 127.0.0.1:6379

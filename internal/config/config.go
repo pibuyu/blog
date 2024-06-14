@@ -11,8 +11,7 @@ type Config struct {
 		Datasource string
 	}
 
-	//Redis struct {
-	//	Host string
-	//}
-	// Redis redis.RedisConf `yaml:"redis"`
+	RedisConf struct {
+		Host string
+	}
 }

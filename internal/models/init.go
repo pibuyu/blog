@@ -21,7 +21,7 @@ func InitDB(datasource string) *gorm.DB {
 // InitRedisConnection 返回redis连接
 func InitRedisConnection(c config.Config) *redis.Client {
 	return redis.NewClient(&redis.Options{
-		Addr:     c.Redis.Host,
+		Addr:     c.RedisConf.Host,
 		Password: define.REDIS_CONN_PWD, // no password set
 		DB:       0,                     // use default DB
 	})
