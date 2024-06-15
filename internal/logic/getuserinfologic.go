@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"gorm.io/gorm"
+	"reflect"
 
 	"blog/rpc/internal/svc"
 	"blog/rpc/types/user"
@@ -28,7 +29,7 @@ func NewGetUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUs
 }
 
 func (l *GetUserInfoLogic) GetUserInfo(in *user.GetUserInfoRequest) (*user.GetUserInfoResponse, error) {
-
+	fmt.Printf("传递过来的req参数in为：%s,user_id值为：%s,类型为：%s", in, in.GetUserId(), reflect.TypeOf(in.UserId))
 	userBasic := models.UserBasic{}
 	result := l.svcCtx.DB.Debug().Where("id = ?", in.UserId).First(&userBasic)
 	if result.Error != nil {
