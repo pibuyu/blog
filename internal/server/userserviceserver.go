@@ -51,3 +51,13 @@ func (s *UserServiceServer) UserRegister(ctx context.Context, in *user.UserRegis
 	l := logic.NewUserRegisterLogic(ctx, s.svcCtx)
 	return l.UserRegister(in)
 }
+
+func (s *UserServiceServer) KafkaSendTestcase(ctx context.Context, in *user.KafkaSendTestcaseRequest) (*user.KafkaSendTestcaseResponse, error) {
+	l := logic.NewKafkaSendTestcaseLogic(ctx, s.svcCtx)
+	return l.KafkaSendTestcase(in)
+}
+
+func (s *UserServiceServer) KafkaReceiveTestcase(ctx context.Context, in *user.Empty) (*user.KafkaReceiveTestcaseResponse, error) {
+	l := logic.NewKafkaReceiveTestcaseLogic(ctx, s.svcCtx)
+	return l.KafkaReceiveTestcase(in)
+}

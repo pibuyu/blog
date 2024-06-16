@@ -15,10 +15,14 @@ import (
 type (
 	DeleteUserRepositoryByIdentityRequest   = user.DeleteUserRepositoryByIdentityRequest
 	DeleteUserRepositoryByIdentityResponse  = user.DeleteUserRepositoryByIdentityResponse
+	Empty                                   = user.Empty
 	GetUserInfoRequest                      = user.GetUserInfoRequest
 	GetUserInfoResponse                     = user.GetUserInfoResponse
 	GetUserRepositoryByUserIdentityRequest  = user.GetUserRepositoryByUserIdentityRequest
 	GetUserRepositoryByUserIdentityResponse = user.GetUserRepositoryByUserIdentityResponse
+	KafkaReceiveTestcaseResponse            = user.KafkaReceiveTestcaseResponse
+	KafkaSendTestcaseRequest                = user.KafkaSendTestcaseRequest
+	KafkaSendTestcaseResponse               = user.KafkaSendTestcaseResponse
 	LoginRequest                            = user.LoginRequest
 	LoginResponse                           = user.LoginResponse
 	RegisterSendCodeRequest                 = user.RegisterSendCodeRequest
@@ -34,6 +38,8 @@ type (
 		DeleteUserRepositoryByIdentity(ctx context.Context, in *DeleteUserRepositoryByIdentityRequest, opts ...grpc.CallOption) (*DeleteUserRepositoryByIdentityResponse, error)
 		RegisterSendCode(ctx context.Context, in *RegisterSendCodeRequest, opts ...grpc.CallOption) (*RegisterSendCodeResponse, error)
 		UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error)
+		KafkaSendTestcase(ctx context.Context, in *KafkaSendTestcaseRequest, opts ...grpc.CallOption) (*KafkaSendTestcaseResponse, error)
+		KafkaReceiveTestcase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaReceiveTestcaseResponse, error)
 	}
 
 	defaultUserService struct {
@@ -75,4 +81,14 @@ func (m *defaultUserService) RegisterSendCode(ctx context.Context, in *RegisterS
 func (m *defaultUserService) UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error) {
 	client := user.NewUserServiceClient(m.cli.Conn())
 	return client.UserRegister(ctx, in, opts...)
+}
+
+func (m *defaultUserService) KafkaSendTestcase(ctx context.Context, in *KafkaSendTestcaseRequest, opts ...grpc.CallOption) (*KafkaSendTestcaseResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.KafkaSendTestcase(ctx, in, opts...)
+}
+
+func (m *defaultUserService) KafkaReceiveTestcase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaReceiveTestcaseResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.KafkaReceiveTestcase(ctx, in, opts...)
 }

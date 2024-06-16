@@ -1,6 +1,8 @@
 Name: user.rpc
 ListenOn: 0.0.0.0:8080
 
+
+
 #etcd服务发现配置
 Etcd:
   Hosts:
@@ -14,3 +16,22 @@ Mysql:
 
 RedisConf:
   Host: 127.0.0.1:6379
+
+
+
+#kafka pusher
+KqPusherConf:
+  Brokers:
+    - 127.0.0.1:9092
+  Topic: payment-success
+
+#kafka consumer
+KqConsumerConf:
+  Name: kqConsumer
+  Brokers:
+    - 127.0.0.1:9092
+  Group: kqConsumer
+  Topic: payment-success
+  Offset: first
+  Consumers: 8
+  Processors: 8

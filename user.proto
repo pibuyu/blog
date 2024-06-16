@@ -63,6 +63,23 @@ message UserRegisterResponse{
   bool  result=1;
   string msg=2;
 }
+
+message KafkaSendTestcaseRequest{
+  string data=1;
+}
+
+message KafkaSendTestcaseResponse{
+  bool result=1;
+  string msg=2;
+}
+
+message Empty{
+
+}
+
+message KafkaReceiveTestcaseResponse{
+  string data=1;
+}
 service UserService {
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse);
@@ -70,6 +87,8 @@ service UserService {
   rpc DeleteUserRepositoryByIdentity(DeleteUserRepositoryByIdentityRequest)returns (DeleteUserRepositoryByIdentityResponse);
   rpc RegisterSendCode(RegisterSendCodeRequest) returns (RegisterSendCodeResponse);
   rpc UserRegister(UserRegisterRequest) returns (UserRegisterResponse);
+  rpc KafkaSendTestcase (KafkaSendTestcaseRequest) returns (KafkaSendTestcaseResponse);
+  rpc KafkaReceiveTestcase (Empty) returns (KafkaReceiveTestcaseResponse);
 }
 
 //   goctl rpc protoc user.proto --go_out=types --go-grpc_out=types --zrpc_out=.

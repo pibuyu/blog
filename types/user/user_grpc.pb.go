@@ -25,6 +25,8 @@ const (
 	UserService_DeleteUserRepositoryByIdentity_FullMethodName  = "/rpc.UserService/DeleteUserRepositoryByIdentity"
 	UserService_RegisterSendCode_FullMethodName                = "/rpc.UserService/RegisterSendCode"
 	UserService_UserRegister_FullMethodName                    = "/rpc.UserService/UserRegister"
+	UserService_KafkaSendTestcase_FullMethodName               = "/rpc.UserService/KafkaSendTestcase"
+	UserService_KafkaReceiveTestcase_FullMethodName            = "/rpc.UserService/KafkaReceiveTestcase"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -37,6 +39,8 @@ type UserServiceClient interface {
 	DeleteUserRepositoryByIdentity(ctx context.Context, in *DeleteUserRepositoryByIdentityRequest, opts ...grpc.CallOption) (*DeleteUserRepositoryByIdentityResponse, error)
 	RegisterSendCode(ctx context.Context, in *RegisterSendCodeRequest, opts ...grpc.CallOption) (*RegisterSendCodeResponse, error)
 	UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error)
+	KafkaSendTestcase(ctx context.Context, in *KafkaSendTestcaseRequest, opts ...grpc.CallOption) (*KafkaSendTestcaseResponse, error)
+	KafkaReceiveTestcase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaReceiveTestcaseResponse, error)
 }
 
 type userServiceClient struct {
@@ -101,6 +105,24 @@ func (c *userServiceClient) UserRegister(ctx context.Context, in *UserRegisterRe
 	return out, nil
 }
 
+func (c *userServiceClient) KafkaSendTestcase(ctx context.Context, in *KafkaSendTestcaseRequest, opts ...grpc.CallOption) (*KafkaSendTestcaseResponse, error) {
+	out := new(KafkaSendTestcaseResponse)
+	err := c.cc.Invoke(ctx, UserService_KafkaSendTestcase_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) KafkaReceiveTestcase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaReceiveTestcaseResponse, error) {
+	out := new(KafkaReceiveTestcaseResponse)
+	err := c.cc.Invoke(ctx, UserService_KafkaReceiveTestcase_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -111,6 +133,8 @@ type UserServiceServer interface {
 	DeleteUserRepositoryByIdentity(context.Context, *DeleteUserRepositoryByIdentityRequest) (*DeleteUserRepositoryByIdentityResponse, error)
 	RegisterSendCode(context.Context, *RegisterSendCodeRequest) (*RegisterSendCodeResponse, error)
 	UserRegister(context.Context, *UserRegisterRequest) (*UserRegisterResponse, error)
+	KafkaSendTestcase(context.Context, *KafkaSendTestcaseRequest) (*KafkaSendTestcaseResponse, error)
+	KafkaReceiveTestcase(context.Context, *Empty) (*KafkaReceiveTestcaseResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -135,6 +159,12 @@ func (UnimplementedUserServiceServer) RegisterSendCode(context.Context, *Registe
 }
 func (UnimplementedUserServiceServer) UserRegister(context.Context, *UserRegisterRequest) (*UserRegisterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserRegister not implemented")
+}
+func (UnimplementedUserServiceServer) KafkaSendTestcase(context.Context, *KafkaSendTestcaseRequest) (*KafkaSendTestcaseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KafkaSendTestcase not implemented")
+}
+func (UnimplementedUserServiceServer) KafkaReceiveTestcase(context.Context, *Empty) (*KafkaReceiveTestcaseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KafkaReceiveTestcase not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -257,6 +287,42 @@ func _UserService_UserRegister_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_KafkaSendTestcase_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(KafkaSendTestcaseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).KafkaSendTestcase(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_KafkaSendTestcase_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).KafkaSendTestcase(ctx, req.(*KafkaSendTestcaseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_KafkaReceiveTestcase_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).KafkaReceiveTestcase(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_KafkaReceiveTestcase_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).KafkaReceiveTestcase(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -287,6 +353,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserRegister",
 			Handler:    _UserService_UserRegister_Handler,
+		},
+		{
+			MethodName: "KafkaSendTestcase",
+			Handler:    _UserService_KafkaSendTestcase_Handler,
+		},
+		{
+			MethodName: "KafkaReceiveTestcase",
+			Handler:    _UserService_KafkaReceiveTestcase_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
