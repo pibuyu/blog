@@ -9,7 +9,7 @@ import (
 func newAsynqServer(c config.Config) *asynq.Server {
 
 	return asynq.NewServer(
-		asynq.RedisClientOpt{Addr: "127.0.0.1:6379"},
+		asynq.RedisClientOpt{Addr: c.RedisConf.Host},
 		asynq.Config{
 			IsFailure: func(err error) bool {
 				fmt.Printf("asynq server 执行延迟任务出错 err : %+v \n", err)

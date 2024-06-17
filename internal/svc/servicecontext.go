@@ -27,7 +27,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		DB:             models.InitDB(c.Mysql.Datasource),
 		RDB:            models.InitRedisConnection(c),
 		KqPusherClient: kq.NewPusher(c.KqPusherConf.Brokers, c.KqPusherConf.Topic),
-		AsynqClient:    newAsynqClient(),
+		AsynqClient:    newAsynqClient(c),
 		AsynqServer:    newAsynqServer(c),
 	}
 }
