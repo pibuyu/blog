@@ -5,6 +5,7 @@ import (
 	"blog/rpc/internal/svc"
 	"blog/rpc/types/user"
 	"context"
+	"encoding/json"
 	"github.com/hibiken/asynq"
 	"time"
 
@@ -27,7 +28,15 @@ func NewKafkaSendTestcaseLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 
 // KafkaSendTestcase asynq 发送延时消息
 func (l *KafkaSendTestcaseLogic) KafkaSendTestcase(in *user.KafkaSendTestcaseRequest) (*user.KafkaSendTestcaseResponse, error) {
-	payload := []byte(in.Data)
+	rpcReq := &user.UserRegisterRequest{
+		Username: in.Username,
+		Password: in.Password,
+		Email:    in.Email,
+		Code:     in.Code,
+	}
+	//fmt.Printf("rpcReq对象为%v\n", rpcReq)
+	payload, _ := json.Marshal(rpcReq)
+	//fmt.Printf("传递过去的payload对象为%v\n", string(payload))
 	//创建异步任务
 	_, err := l.svcCtx.AsynqClient.Enqueue(asynq.NewTask(models.USER_REGISTER_JOB, payload),
 		asynq.ProcessAt(time.Now().Add(1*time.Second)))

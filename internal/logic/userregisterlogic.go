@@ -40,11 +40,12 @@ func (l *UserRegisterLogic) UserRegister(in *user.UserRegisterRequest) (*user.Us
 
 	//判断用户输入的验证码是否正确
 	inputCode := in.Code
+	//向redis存储验证码时，key为define.REDIS_VERI_CODE_PRE+in.Email；但是微服务调用时，
 	actualCode, err := l.svcCtx.RDB.Get(l.ctx, define.REDIS_VERI_CODE_PRE+in.Email).Result()
 	if err != nil {
 		return nil, fmt.Errorf("从redis取验证码出错：%w", err)
 	}
-	//fmt.Printf("用户输入的验证码为：%s,redis中的验证码为%s", inputCode, actualCode)
+	fmt.Printf("用户输入的验证码为：%s,redis中的验证码为%s", inputCode, actualCode)
 	if inputCode != actualCode {
 		return nil, errors.New("输入的验证码错误")
 	}
