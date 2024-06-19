@@ -12,6 +12,11 @@ type Config struct {
 		Datasource string
 	}
 
+	//dtm用到的用于回滚的数据库连接配置
+	DtmBarrierDB struct {
+		Datasource string
+	}
+
 	RedisConf struct {
 		Host string
 	}

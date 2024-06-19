@@ -14,6 +14,9 @@ Etcd:
 Mysql:
   Datasource: root:123456@tcp(127.0.0.1:3306)/cloud_disk?charset=utf8mb4&parseTime=True&loc=Local
 
+DtmBarrierDB:
+  Datasource: root:123456@tcp(127.0.0.1:3306)/dtm_barrier?charset=utf8mb4&parseTime=True&loc=Local
+
 RedisConf:
   Host: 127.0.0.1:6379
 
