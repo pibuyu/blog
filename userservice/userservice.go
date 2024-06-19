@@ -13,6 +13,8 @@ import (
 )
 
 type (
+	CreateOrderRequest                      = user.CreateOrderRequest
+	CreateOrderResponse                     = user.CreateOrderResponse
 	DeleteUserRepositoryByIdentityRequest   = user.DeleteUserRepositoryByIdentityRequest
 	DeleteUserRepositoryByIdentityResponse  = user.DeleteUserRepositoryByIdentityResponse
 	Empty                                   = user.Empty
@@ -27,6 +29,12 @@ type (
 	LoginResponse                           = user.LoginResponse
 	RegisterSendCodeRequest                 = user.RegisterSendCodeRequest
 	RegisterSendCodeResponse                = user.RegisterSendCodeResponse
+	RoomIsExistRequest                      = user.RoomIsExistRequest
+	RoomIsExistResponse                     = user.RoomIsExistResponse
+	RoomStockDeductRequest                  = user.RoomStockDeductRequest
+	RoomStockDeductResponse                 = user.RoomStockDeductResponse
+	UserIsExistRequest                      = user.UserIsExistRequest
+	UserIsExistResponse                     = user.UserIsExistResponse
 	UserRegisterRequest                     = user.UserRegisterRequest
 	UserRegisterResponse                    = user.UserRegisterResponse
 	UserRepository                          = user.UserRepository
@@ -40,6 +48,10 @@ type (
 		UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error)
 		KafkaSendTestcase(ctx context.Context, in *KafkaSendTestcaseRequest, opts ...grpc.CallOption) (*KafkaSendTestcaseResponse, error)
 		KafkaReceiveTestcase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaReceiveTestcaseResponse, error)
+		UserIsExist(ctx context.Context, in *UserIsExistRequest, opts ...grpc.CallOption) (*UserIsExistResponse, error)
+		CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderResponse, error)
+		RoomStockDeduct(ctx context.Context, in *RoomStockDeductRequest, opts ...grpc.CallOption) (*RoomStockDeductResponse, error)
+		RoomIsExist(ctx context.Context, in *RoomIsExistRequest, opts ...grpc.CallOption) (*RoomIsExistResponse, error)
 	}
 
 	defaultUserService struct {
@@ -91,4 +103,24 @@ func (m *defaultUserService) KafkaSendTestcase(ctx context.Context, in *KafkaSen
 func (m *defaultUserService) KafkaReceiveTestcase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaReceiveTestcaseResponse, error) {
 	client := user.NewUserServiceClient(m.cli.Conn())
 	return client.KafkaReceiveTestcase(ctx, in, opts...)
+}
+
+func (m *defaultUserService) UserIsExist(ctx context.Context, in *UserIsExistRequest, opts ...grpc.CallOption) (*UserIsExistResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.UserIsExist(ctx, in, opts...)
+}
+
+func (m *defaultUserService) CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.CreateOrder(ctx, in, opts...)
+}
+
+func (m *defaultUserService) RoomStockDeduct(ctx context.Context, in *RoomStockDeductRequest, opts ...grpc.CallOption) (*RoomStockDeductResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.RoomStockDeduct(ctx, in, opts...)
+}
+
+func (m *defaultUserService) RoomIsExist(ctx context.Context, in *RoomIsExistRequest, opts ...grpc.CallOption) (*RoomIsExistResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.RoomIsExist(ctx, in, opts...)
 }

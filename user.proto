@@ -83,6 +83,44 @@ message Empty{
 message KafkaReceiveTestcaseResponse{
   string data=1;
 }
+
+message UserIsExistRequest{
+  string user_identity=1;
+}
+
+message UserIsExistResponse{
+  bool exist=1;
+}
+
+message CreateOrderRequest{
+  string user_identity=1;
+  string   room_identity=2;
+  float price=3;
+}
+
+message CreateOrderResponse{
+  bool success=1;
+  string identity=2;
+  string msg=3;
+}
+
+message RoomIsExistRequest{
+  string identity=1;
+}
+message RoomIsExistResponse{
+  bool exist=1;
+  int32 stock=2;
+  float price=3;
+}
+
+message RoomStockDeductRequest{
+  string room_identity=1;
+  int32 deduct_number=2;
+}
+message RoomStockDeductResponse{
+  bool  success=1;
+  string msg=2;
+}
 service UserService {
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse);
@@ -92,6 +130,14 @@ service UserService {
   rpc UserRegister(UserRegisterRequest) returns (UserRegisterResponse);
   rpc KafkaSendTestcase (KafkaSendTestcaseRequest) returns (KafkaSendTestcaseResponse);
   rpc KafkaReceiveTestcase (Empty) returns (KafkaReceiveTestcaseResponse);
+
+  rpc UserIsExist(UserIsExistRequest) returns (UserIsExistResponse);
+
+  rpc CreateOrder(CreateOrderRequest)returns (CreateOrderResponse);
+
+  rpc RoomStockDeduct(RoomStockDeductRequest)returns (RoomStockDeductResponse);
+
+  rpc RoomIsExist(RoomIsExistRequest)returns (RoomIsExistResponse);
 }
 
 //   goctl rpc protoc user.proto --go_out=types --go-grpc_out=types --zrpc_out=.

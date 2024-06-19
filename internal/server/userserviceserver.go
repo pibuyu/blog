@@ -61,3 +61,23 @@ func (s *UserServiceServer) KafkaReceiveTestcase(ctx context.Context, in *user.E
 	l := logic.NewKafkaReceiveTestcaseLogic(ctx, s.svcCtx)
 	return l.KafkaReceiveTestcase(in)
 }
+
+func (s *UserServiceServer) UserIsExist(ctx context.Context, in *user.UserIsExistRequest) (*user.UserIsExistResponse, error) {
+	l := logic.NewUserIsExistLogic(ctx, s.svcCtx)
+	return l.UserIsExist(in)
+}
+
+func (s *UserServiceServer) CreateOrder(ctx context.Context, in *user.CreateOrderRequest) (*user.CreateOrderResponse, error) {
+	l := logic.NewCreateOrderLogic(ctx, s.svcCtx)
+	return l.CreateOrder(in)
+}
+
+func (s *UserServiceServer) RoomStockDeduct(ctx context.Context, in *user.RoomStockDeductRequest) (*user.RoomStockDeductResponse, error) {
+	l := logic.NewRoomStockDeductLogic(ctx, s.svcCtx)
+	return l.RoomStockDeduct(in)
+}
+
+func (s *UserServiceServer) RoomIsExist(ctx context.Context, in *user.RoomIsExistRequest) (*user.RoomIsExistResponse, error) {
+	l := logic.NewRoomIsExistLogic(ctx, s.svcCtx)
+	return l.RoomIsExist(in)
+}

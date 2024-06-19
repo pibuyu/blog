@@ -27,6 +27,10 @@ const (
 	UserService_UserRegister_FullMethodName                    = "/rpc.UserService/UserRegister"
 	UserService_KafkaSendTestcase_FullMethodName               = "/rpc.UserService/KafkaSendTestcase"
 	UserService_KafkaReceiveTestcase_FullMethodName            = "/rpc.UserService/KafkaReceiveTestcase"
+	UserService_UserIsExist_FullMethodName                     = "/rpc.UserService/UserIsExist"
+	UserService_CreateOrder_FullMethodName                     = "/rpc.UserService/CreateOrder"
+	UserService_RoomStockDeduct_FullMethodName                 = "/rpc.UserService/RoomStockDeduct"
+	UserService_RoomIsExist_FullMethodName                     = "/rpc.UserService/RoomIsExist"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -41,6 +45,10 @@ type UserServiceClient interface {
 	UserRegister(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error)
 	KafkaSendTestcase(ctx context.Context, in *KafkaSendTestcaseRequest, opts ...grpc.CallOption) (*KafkaSendTestcaseResponse, error)
 	KafkaReceiveTestcase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaReceiveTestcaseResponse, error)
+	UserIsExist(ctx context.Context, in *UserIsExistRequest, opts ...grpc.CallOption) (*UserIsExistResponse, error)
+	CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderResponse, error)
+	RoomStockDeduct(ctx context.Context, in *RoomStockDeductRequest, opts ...grpc.CallOption) (*RoomStockDeductResponse, error)
+	RoomIsExist(ctx context.Context, in *RoomIsExistRequest, opts ...grpc.CallOption) (*RoomIsExistResponse, error)
 }
 
 type userServiceClient struct {
@@ -123,6 +131,42 @@ func (c *userServiceClient) KafkaReceiveTestcase(ctx context.Context, in *Empty,
 	return out, nil
 }
 
+func (c *userServiceClient) UserIsExist(ctx context.Context, in *UserIsExistRequest, opts ...grpc.CallOption) (*UserIsExistResponse, error) {
+	out := new(UserIsExistResponse)
+	err := c.cc.Invoke(ctx, UserService_UserIsExist_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderResponse, error) {
+	out := new(CreateOrderResponse)
+	err := c.cc.Invoke(ctx, UserService_CreateOrder_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) RoomStockDeduct(ctx context.Context, in *RoomStockDeductRequest, opts ...grpc.CallOption) (*RoomStockDeductResponse, error) {
+	out := new(RoomStockDeductResponse)
+	err := c.cc.Invoke(ctx, UserService_RoomStockDeduct_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) RoomIsExist(ctx context.Context, in *RoomIsExistRequest, opts ...grpc.CallOption) (*RoomIsExistResponse, error) {
+	out := new(RoomIsExistResponse)
+	err := c.cc.Invoke(ctx, UserService_RoomIsExist_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -135,6 +179,10 @@ type UserServiceServer interface {
 	UserRegister(context.Context, *UserRegisterRequest) (*UserRegisterResponse, error)
 	KafkaSendTestcase(context.Context, *KafkaSendTestcaseRequest) (*KafkaSendTestcaseResponse, error)
 	KafkaReceiveTestcase(context.Context, *Empty) (*KafkaReceiveTestcaseResponse, error)
+	UserIsExist(context.Context, *UserIsExistRequest) (*UserIsExistResponse, error)
+	CreateOrder(context.Context, *CreateOrderRequest) (*CreateOrderResponse, error)
+	RoomStockDeduct(context.Context, *RoomStockDeductRequest) (*RoomStockDeductResponse, error)
+	RoomIsExist(context.Context, *RoomIsExistRequest) (*RoomIsExistResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -165,6 +213,18 @@ func (UnimplementedUserServiceServer) KafkaSendTestcase(context.Context, *KafkaS
 }
 func (UnimplementedUserServiceServer) KafkaReceiveTestcase(context.Context, *Empty) (*KafkaReceiveTestcaseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KafkaReceiveTestcase not implemented")
+}
+func (UnimplementedUserServiceServer) UserIsExist(context.Context, *UserIsExistRequest) (*UserIsExistResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserIsExist not implemented")
+}
+func (UnimplementedUserServiceServer) CreateOrder(context.Context, *CreateOrderRequest) (*CreateOrderResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOrder not implemented")
+}
+func (UnimplementedUserServiceServer) RoomStockDeduct(context.Context, *RoomStockDeductRequest) (*RoomStockDeductResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoomStockDeduct not implemented")
+}
+func (UnimplementedUserServiceServer) RoomIsExist(context.Context, *RoomIsExistRequest) (*RoomIsExistResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoomIsExist not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -323,6 +383,78 @@ func _UserService_KafkaReceiveTestcase_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_UserIsExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIsExistRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).UserIsExist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_UserIsExist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).UserIsExist(ctx, req.(*UserIsExistRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_CreateOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateOrderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).CreateOrder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_CreateOrder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).CreateOrder(ctx, req.(*CreateOrderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_RoomStockDeduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoomStockDeductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).RoomStockDeduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_RoomStockDeduct_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).RoomStockDeduct(ctx, req.(*RoomStockDeductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_RoomIsExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoomIsExistRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).RoomIsExist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_RoomIsExist_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).RoomIsExist(ctx, req.(*RoomIsExistRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -361,6 +493,22 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "KafkaReceiveTestcase",
 			Handler:    _UserService_KafkaReceiveTestcase_Handler,
+		},
+		{
+			MethodName: "UserIsExist",
+			Handler:    _UserService_UserIsExist_Handler,
+		},
+		{
+			MethodName: "CreateOrder",
+			Handler:    _UserService_CreateOrder_Handler,
+		},
+		{
+			MethodName: "RoomStockDeduct",
+			Handler:    _UserService_RoomStockDeduct_Handler,
+		},
+		{
+			MethodName: "RoomIsExist",
+			Handler:    _UserService_RoomIsExist_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
