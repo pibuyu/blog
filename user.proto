@@ -17,7 +17,7 @@ message LoginResponse {
 }
 
 message GetUserInfoRequest{
-  string userId=1;
+  string identity=1;
 }
 
 message GetUserInfoResponse{

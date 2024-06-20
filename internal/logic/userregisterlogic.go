@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"blog/common/Err"
 	"blog/rpc/internal/define"
 	"blog/rpc/internal/helper"
 	"blog/rpc/internal/models"
@@ -9,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	pkgErrors "github.com/pkg/errors"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -27,6 +29,8 @@ func NewUserRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 	}
 }
 
+var ErrorUserAlreadyRegisterErr = Err.NewErrMsg("该邮箱已被注册")
+
 func (l *UserRegisterLogic) UserRegister(in *user.UserRegisterRequest) (*user.UserRegisterResponse, error) {
 	//先查询该邮箱是否注册过
 	var count int64
@@ -35,7 +39,8 @@ func (l *UserRegisterLogic) UserRegister(in *user.UserRegisterRequest) (*user.Us
 		return nil, fmt.Errorf("查询是否已注册出现错误:%w", err)
 	}
 	if count > 0 {
-		return nil, errors.New("该邮箱已被注册！")
+		//return nil, errors.New("该邮箱已被注册！")
+		return nil, pkgErrors.Wrapf(ErrorUserAlreadyRegisterErr, "邮箱%s已被注册,err:%v", in.Email, err)
 	}
 
 	//判断用户输入的验证码是否正确

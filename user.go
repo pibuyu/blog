@@ -1,6 +1,7 @@
 package main
 
 import (
+	"blog/common/interceptor/rpcserver"
 	"blog/rpc/internal/config"
 	"blog/rpc/internal/server"
 	"blog/rpc/internal/svc"
@@ -51,6 +52,7 @@ func main() {
 	//	logx.WithContext(ctxBackground).Errorf("!!!CronJobErr!!! run err:%+v", err)
 	//	os.Exit(1)
 	//}
+	s.AddUnaryInterceptors(rpeserver.LoggerInterceptor)
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()
