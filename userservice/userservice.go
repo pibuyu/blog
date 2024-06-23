@@ -18,6 +18,10 @@ type (
 	DeleteUserRepositoryByIdentityRequest   = user.DeleteUserRepositoryByIdentityRequest
 	DeleteUserRepositoryByIdentityResponse  = user.DeleteUserRepositoryByIdentityResponse
 	Empty                                   = user.Empty
+	FollowUserRequest                       = user.FollowUserRequest
+	FollowUserResponse                      = user.FollowUserResponse
+	GetRoomStockRequest                     = user.GetRoomStockRequest
+	GetRoomStockResponse                    = user.GetRoomStockResponse
 	GetUserInfoRequest                      = user.GetUserInfoRequest
 	GetUserInfoResponse                     = user.GetUserInfoResponse
 	GetUserRepositoryByUserIdentityRequest  = user.GetUserRepositoryByUserIdentityRequest
@@ -51,7 +55,9 @@ type (
 		UserIsExist(ctx context.Context, in *UserIsExistRequest, opts ...grpc.CallOption) (*UserIsExistResponse, error)
 		CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderResponse, error)
 		RoomStockDeduct(ctx context.Context, in *RoomStockDeductRequest, opts ...grpc.CallOption) (*RoomStockDeductResponse, error)
+		GetRoomStock(ctx context.Context, in *GetRoomStockRequest, opts ...grpc.CallOption) (*GetRoomStockResponse, error)
 		RoomIsExist(ctx context.Context, in *RoomIsExistRequest, opts ...grpc.CallOption) (*RoomIsExistResponse, error)
+		FollowUser(ctx context.Context, in *FollowUserRequest, opts ...grpc.CallOption) (*FollowUserResponse, error)
 	}
 
 	defaultUserService struct {
@@ -120,7 +126,17 @@ func (m *defaultUserService) RoomStockDeduct(ctx context.Context, in *RoomStockD
 	return client.RoomStockDeduct(ctx, in, opts...)
 }
 
+func (m *defaultUserService) GetRoomStock(ctx context.Context, in *GetRoomStockRequest, opts ...grpc.CallOption) (*GetRoomStockResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.GetRoomStock(ctx, in, opts...)
+}
+
 func (m *defaultUserService) RoomIsExist(ctx context.Context, in *RoomIsExistRequest, opts ...grpc.CallOption) (*RoomIsExistResponse, error) {
 	client := user.NewUserServiceClient(m.cli.Conn())
 	return client.RoomIsExist(ctx, in, opts...)
+}
+
+func (m *defaultUserService) FollowUser(ctx context.Context, in *FollowUserRequest, opts ...grpc.CallOption) (*FollowUserResponse, error) {
+	client := user.NewUserServiceClient(m.cli.Conn())
+	return client.FollowUser(ctx, in, opts...)
 }

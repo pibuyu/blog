@@ -121,6 +121,23 @@ message RoomStockDeductResponse{
   bool  success=1;
   string msg=2;
 }
+
+message GetRoomStockRequest{
+  string room_identity=1;
+}
+message GetRoomStockResponse{
+  int32 stock=1;
+}
+
+message FollowUserRequest{
+  string to_user_identity=1;
+  string identity=2;
+}
+
+message FollowUserResponse{
+  bool success=1;
+  string msg=2;
+}
 service UserService {
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse);
@@ -137,7 +154,11 @@ service UserService {
 
   rpc RoomStockDeduct(RoomStockDeductRequest)returns (RoomStockDeductResponse);
 
+  rpc GetRoomStock(GetRoomStockRequest)returns (GetRoomStockResponse);
+
   rpc RoomIsExist(RoomIsExistRequest)returns (RoomIsExistResponse);
+
+  rpc FollowUser(FollowUserRequest) returns (FollowUserResponse);
 }
 
 //   goctl rpc protoc user.proto --go_out=types --go-grpc_out=types --zrpc_out=.

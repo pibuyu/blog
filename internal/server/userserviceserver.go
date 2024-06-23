@@ -77,7 +77,17 @@ func (s *UserServiceServer) RoomStockDeduct(ctx context.Context, in *user.RoomSt
 	return l.RoomStockDeduct(in)
 }
 
+func (s *UserServiceServer) GetRoomStock(ctx context.Context, in *user.GetRoomStockRequest) (*user.GetRoomStockResponse, error) {
+	l := logic.NewGetRoomStockLogic(ctx, s.svcCtx)
+	return l.GetRoomStock(in)
+}
+
 func (s *UserServiceServer) RoomIsExist(ctx context.Context, in *user.RoomIsExistRequest) (*user.RoomIsExistResponse, error) {
 	l := logic.NewRoomIsExistLogic(ctx, s.svcCtx)
 	return l.RoomIsExist(in)
+}
+
+func (s *UserServiceServer) FollowUser(ctx context.Context, in *user.FollowUserRequest) (*user.FollowUserResponse, error) {
+	l := logic.NewFollowUserLogic(ctx, s.svcCtx)
+	return l.FollowUser(in)
 }

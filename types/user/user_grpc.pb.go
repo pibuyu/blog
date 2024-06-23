@@ -30,7 +30,9 @@ const (
 	UserService_UserIsExist_FullMethodName                     = "/rpc.UserService/UserIsExist"
 	UserService_CreateOrder_FullMethodName                     = "/rpc.UserService/CreateOrder"
 	UserService_RoomStockDeduct_FullMethodName                 = "/rpc.UserService/RoomStockDeduct"
+	UserService_GetRoomStock_FullMethodName                    = "/rpc.UserService/GetRoomStock"
 	UserService_RoomIsExist_FullMethodName                     = "/rpc.UserService/RoomIsExist"
+	UserService_FollowUser_FullMethodName                      = "/rpc.UserService/FollowUser"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -48,7 +50,9 @@ type UserServiceClient interface {
 	UserIsExist(ctx context.Context, in *UserIsExistRequest, opts ...grpc.CallOption) (*UserIsExistResponse, error)
 	CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderResponse, error)
 	RoomStockDeduct(ctx context.Context, in *RoomStockDeductRequest, opts ...grpc.CallOption) (*RoomStockDeductResponse, error)
+	GetRoomStock(ctx context.Context, in *GetRoomStockRequest, opts ...grpc.CallOption) (*GetRoomStockResponse, error)
 	RoomIsExist(ctx context.Context, in *RoomIsExistRequest, opts ...grpc.CallOption) (*RoomIsExistResponse, error)
+	FollowUser(ctx context.Context, in *FollowUserRequest, opts ...grpc.CallOption) (*FollowUserResponse, error)
 }
 
 type userServiceClient struct {
@@ -158,9 +162,27 @@ func (c *userServiceClient) RoomStockDeduct(ctx context.Context, in *RoomStockDe
 	return out, nil
 }
 
+func (c *userServiceClient) GetRoomStock(ctx context.Context, in *GetRoomStockRequest, opts ...grpc.CallOption) (*GetRoomStockResponse, error) {
+	out := new(GetRoomStockResponse)
+	err := c.cc.Invoke(ctx, UserService_GetRoomStock_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userServiceClient) RoomIsExist(ctx context.Context, in *RoomIsExistRequest, opts ...grpc.CallOption) (*RoomIsExistResponse, error) {
 	out := new(RoomIsExistResponse)
 	err := c.cc.Invoke(ctx, UserService_RoomIsExist_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) FollowUser(ctx context.Context, in *FollowUserRequest, opts ...grpc.CallOption) (*FollowUserResponse, error) {
+	out := new(FollowUserResponse)
+	err := c.cc.Invoke(ctx, UserService_FollowUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +204,9 @@ type UserServiceServer interface {
 	UserIsExist(context.Context, *UserIsExistRequest) (*UserIsExistResponse, error)
 	CreateOrder(context.Context, *CreateOrderRequest) (*CreateOrderResponse, error)
 	RoomStockDeduct(context.Context, *RoomStockDeductRequest) (*RoomStockDeductResponse, error)
+	GetRoomStock(context.Context, *GetRoomStockRequest) (*GetRoomStockResponse, error)
 	RoomIsExist(context.Context, *RoomIsExistRequest) (*RoomIsExistResponse, error)
+	FollowUser(context.Context, *FollowUserRequest) (*FollowUserResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -223,8 +247,14 @@ func (UnimplementedUserServiceServer) CreateOrder(context.Context, *CreateOrderR
 func (UnimplementedUserServiceServer) RoomStockDeduct(context.Context, *RoomStockDeductRequest) (*RoomStockDeductResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoomStockDeduct not implemented")
 }
+func (UnimplementedUserServiceServer) GetRoomStock(context.Context, *GetRoomStockRequest) (*GetRoomStockResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRoomStock not implemented")
+}
 func (UnimplementedUserServiceServer) RoomIsExist(context.Context, *RoomIsExistRequest) (*RoomIsExistResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoomIsExist not implemented")
+}
+func (UnimplementedUserServiceServer) FollowUser(context.Context, *FollowUserRequest) (*FollowUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FollowUser not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -437,6 +467,24 @@ func _UserService_RoomStockDeduct_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_GetRoomStock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRoomStockRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetRoomStock(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_GetRoomStock_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetRoomStock(ctx, req.(*GetRoomStockRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _UserService_RoomIsExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RoomIsExistRequest)
 	if err := dec(in); err != nil {
@@ -451,6 +499,24 @@ func _UserService_RoomIsExist_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).RoomIsExist(ctx, req.(*RoomIsExistRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_FollowUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FollowUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).FollowUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_FollowUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).FollowUser(ctx, req.(*FollowUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -507,8 +573,16 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserService_RoomStockDeduct_Handler,
 		},
 		{
+			MethodName: "GetRoomStock",
+			Handler:    _UserService_GetRoomStock_Handler,
+		},
+		{
 			MethodName: "RoomIsExist",
 			Handler:    _UserService_RoomIsExist_Handler,
+		},
+		{
+			MethodName: "FollowUser",
+			Handler:    _UserService_FollowUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
